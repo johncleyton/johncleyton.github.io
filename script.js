@@ -87,7 +87,7 @@ function AtaqueLanca1(){
 	while (i < 12)
 	{
 		objContexto.drawImage(imgLanca, xAtaque1[i], yAtaque1)
-		Colidir(xAtaque1[i], yAtaque1)
+		Colidir(xAtaque1[i], yAtaque1, animacao1)
 		i += 1
 	}
 	yAtaque1 += 6
@@ -240,12 +240,14 @@ function Resetar(){
 	Iniciar();
 }
 
-function Colidir(x, y){
+function Colidir(x, y, animacao){
 	if (xCoracao + 15 > x &&
 		xCoracao < x + 15 &&
 		yCoracao + 64 < y &&
 		yCoracao < y + 64 )
 	{
 		window.alert('Caiu na lanca?')
+		cancelAnimationFrame(animacao)
+		Resetar()
 	}
 }
