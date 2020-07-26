@@ -30,6 +30,10 @@ var yAtaque5 = 0
 
 var yAtaque6 = 0
 
+var quantosErros = 0
+
+var erros = document.getElementById("teste")
+
 //---------------------------Funcões-------------------------------------
 
 function Iniciar(){
@@ -97,11 +101,12 @@ function AtaqueLanca1(){
 		AtaqueLanca2()
 	}
 }
-else if (qualFase == 2)
+else 
+	if (qualFase == 2)
 	{
 		animacao7 = requestAnimationFrame()
 		AtualizaTela()
-	}		
+	}	
 }
 
 function AtaqueLanca2(){
@@ -112,6 +117,7 @@ function AtaqueLanca2(){
 	while (x < 12)
 	{
 		objContexto.drawImage(imgLanca, xAtaque2[x], yAtaque2)
+		Colidir(xAtaque2[x], yAtaque2, animacao2)
 		x += 1
 	}
 	yAtaque2 += 7
@@ -130,6 +136,7 @@ function AtaqueLanca3(){
 	while (x3 < 12)
 	{
 		objContexto.drawImage(imgLanca, xAtaque3[x3], yAtaque3)
+		Colidir(xAtaque3[x3], yAtaque3, animacao3)
 		x3 += 1
 	}
 	yAtaque3 += 8
@@ -147,6 +154,7 @@ function AtaqueLanca4(){
 	for (let x4 = 181; x4 < 316; x4 += 15)
 	{
 		objContexto.drawImage(imgLanca, x4, yAtaque4)
+		Colidir(x4, yAtaque4, animacao4)
 	}
 	yAtaque4 += 8
 
@@ -164,6 +172,7 @@ function AtaqueLanca5(){
 	for (let x5 = 0; x5 < 135; x5 += 15)
 	{
 		objContexto.drawImage(imgLanca, x5, yAtaque5)
+		Colidir(x5, yAtaque5, animacao5)
 	}
 
 	yAtaque5 += 8
@@ -171,6 +180,7 @@ function AtaqueLanca5(){
 	for (let x6 = 361; x6 < 496; x6 += 15)
 	{
 		objContexto.drawImage(imgLanca, x6, yAtaque6)
+		Colidir(x6, yAtaque6, animacao5)
 	}
 
 	yAtaque6 += 8
@@ -178,11 +188,12 @@ function AtaqueLanca5(){
 	if (yAtaque5 >= 480 || yAtaque6 >= 480)
 	{
 		cancelAnimationFrame(animacao5)
-		window.alert('Boa irmão passou da primeira fase, mas sem colisão até minha vó')
+		window.alert('Boa irmão passou da primeira fase')
 		qualFase++;
 		xCoracao = 260
 		yCoracao = 400
 		imgCoracao.src = "Img/coracaoRosa.png"
+		emCombate = true
 		AtualizaTela()
 	}
 }
@@ -243,10 +254,9 @@ function Resetar(){
 function Colidir(x, y, animacao){
 	if (xCoracao + 15 > x &&
 		xCoracao < x + 15 &&
-		yCoracao + 64 < y &&
+		yCoracao + 64 > y &&
 		yCoracao < y + 64 )
 	{
-		window.alert('Caiu na lanca?')
 		cancelAnimationFrame(animacao)
 		Resetar()
 	}
