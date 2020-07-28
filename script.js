@@ -217,8 +217,6 @@ function AtaqueLaranja5(){
 function AtaqueRosa1()
 {
 	AtaqueRosaMeio()
-	Iniciar()
-	AtaqueRosaEsquerdaMeio()
 }
 
 function AtaqueRosaMeio()
@@ -234,6 +232,7 @@ function AtaqueRosaMeio()
 	if (yAtaqueRosaMeio >= 480)
 	{
 		cancelAnimationFrame(animacaoRosa1)
+		AtaqueRosaEsquerdaMeio()
 	}
 }
 
@@ -253,6 +252,7 @@ function AtaqueRosaEsquerdaMeio()
 	if (yAtaqueRosaEsquerdaMeio >= 480)
 	{
 		cancelAnimationFrame(animacaoRosa2)
+		AtaqueRosaDireitaMeio()
 	}
 }
 
