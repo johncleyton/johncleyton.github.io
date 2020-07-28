@@ -16,8 +16,10 @@ imgLanca.src = "Img/LancaMenor.png"
 var musica = new Audio()
 musica.src = "Musicas/HeartBeat.mp3"
 
-var Itachi = new Audio()
-Itachi.src = "Musicas/Itachi.mpeg"
+var Hopes = new Audio()
+Hopes.src = "Musicas/HopesAndDreams.mp3"
+
+var Boss = document.getElementById("Boss")
 
 let qualFase = 1
 
@@ -36,6 +38,7 @@ let yAtaque5 = 0
 let yAtaque6 = 0
 
 let quantasVezes = 0
+let quantasVezesLaranja = 0
 
 //---------------------------Funcões-------------------------------------
 
@@ -43,38 +46,43 @@ function Iniciar(){
 
 	objCanvas = document.getElementById("meuCanvas");
 	objContexto = objCanvas.getContext("2d");
-	yAtaque1 = -70;
 
-	for (let v = 0; v < 12; v++)
-	{
-		xAtaque1[v] = Math.floor(Math.random() * 513)
-	}
-
-	yAtaque2 = -100
-
-	for (let vet = 0; vet < 12; vet++)
-	{
-		xAtaque2[vet] = Math.floor(Math.random() * 513)
-	}
-
-	yAtaque3 = -80
-
-	for (let vetor3 = 0; vetor3 < 12; vetor3++)
-	{
-		xAtaque3[vetor3] = Math.floor(Math.random() * 513)
-	}
-
-	yAtaque4 = yAtaque5 = yAtaque6 = -70
-
-	yAtaqueRosaMeio = yAtaqueRosaDireitaMeio = yAtaqueRosaEsquerdaMeio = 
-	yAtaqueRosaEsquerdaDireita = -200
-
-	yAtaqueRosaTriplo = -60
+	Randomizar()
+	ResetarY()
 
 	quantasVezes = 0
-
+	quantasVezesLaranja = 0
 	AtualizaTela();
 
+}
+
+function Randomizar()
+{
+	for (let v = 0; v < 16; v++)
+	{
+		xAtaque1[v] = Math.floor(Math.random() * 498)
+	}
+
+	for (let vet = 0; vet < 16; vet++)
+	{
+		xAtaque2[vet] = Math.floor(Math.random() * 498)
+	}
+
+	for (let vetor3 = 0; vetor3 < 16; vetor3++)
+	{
+		xAtaque3[vetor3] = Math.floor(Math.random() * 498)
+	}
+}
+
+function ResetarY()
+{
+	yAtaque1 = -70;
+	yAtaque2 = -100
+	yAtaque3 = -80
+	yAtaque4 = yAtaque5 = yAtaque6 = -70
+	yAtaqueRosaMeio = yAtaqueRosaDireitaMeio = yAtaqueRosaEsquerdaMeio = 
+	yAtaqueRosaEsquerdaDireita = -200
+	yAtaqueRosaTriplo = -60
 }
 
 function AtualizaTela(){
@@ -91,7 +99,12 @@ function Ataques(){
 	if (qualFase == 2)
 	{
 		AtaqueRosa1()
-	}	
+	}
+	else 
+		if (qualFase == 3)
+	{
+
+	}
 }
 
 //-----------------------------------------Ataques Laranjas-------------------------------------------
@@ -108,7 +121,7 @@ function AtaqueLaranja1(){
 	animacao1 = requestAnimationFrame(AtaqueLaranja1)
 	AtualizaTela()
 	let i = 0
-	while (i < 12)
+	while (i < 16)
 	{
 		objContexto.drawImage(imgLanca, xAtaque1[i], yAtaque1)
 		Colidir(xAtaque1[i], yAtaque1, animacao1)
@@ -118,6 +131,7 @@ function AtaqueLaranja1(){
 	if (yAtaque1 >= 480)
 	{
 		cancelAnimationFrame(animacao1)
+		yAtaque1 = -70
 		AtaqueLaranja2()
 	}
 }
@@ -127,16 +141,17 @@ function AtaqueLaranja2(){
 	AtualizaTela()
 
 	let x = 0
-	while (x < 12)
+	while (x < 16)
 	{
 		objContexto.drawImage(imgLanca, xAtaque2[x], yAtaque2)
 		Colidir(xAtaque2[x], yAtaque2, animacao2)
 		x += 1
 	}
-	yAtaque2 += 7
+	yAtaque2 += 6
 	if (yAtaque2 >= 480)
 	{
 		cancelAnimationFrame(animacao2)
+		yAtaque2 = -70
 		AtaqueLaranja3();
 	}
 }
@@ -146,16 +161,17 @@ function AtaqueLaranja3(){
 	AtualizaTela()
 
 	let x3 = 0
-	while (x3 < 12)
+	while (x3 < 16)
 	{
 		objContexto.drawImage(imgLanca, xAtaque3[x3], yAtaque3)
 		Colidir(xAtaque3[x3], yAtaque3, animacao3)
 		x3 += 1
 	}
-	yAtaque3 += 8
+	yAtaque3 += 6
 	if (yAtaque3 >= 480)
 	{
 		cancelAnimationFrame(animacao3)
+		yAtaque3 = -70
 		AtaqueLaranja4()
 	}
 }
@@ -169,12 +185,21 @@ function AtaqueLaranja4(){
 		objContexto.drawImage(imgLanca, x4, yAtaque4)
 		Colidir(x4, yAtaque4, animacao4)
 	}
-	yAtaque4 += 8
+	yAtaque4 += 6
 
 	if (yAtaque4 >= 480)
 	{
 		cancelAnimationFrame(animacao4)
-		AtaqueLaranja5()
+		if (quantasVezesLaranja <= 3)
+		{
+			Randomizar()
+			AtaqueLaranja1()
+			quantasVezesLaranja++
+		}
+		else
+		{
+			AtaqueLaranja5()
+		}
 	}
 }
 
@@ -188,7 +213,7 @@ function AtaqueLaranja5(){
 		Colidir(x5, yAtaque5, animacao5)
 	}
 
-	yAtaque5 += 8
+	yAtaque5 += 6
 
 	for (let x6 = 361; x6 < 496; x6 += 15)
 	{
@@ -196,7 +221,7 @@ function AtaqueLaranja5(){
 		Colidir(x6, yAtaque6, animacao5)
 	}
 
-	yAtaque6 += 8
+	yAtaque6 += 6
 
 	if (yAtaque5 >= 480 || yAtaque6 >= 480)
 	{
@@ -207,6 +232,7 @@ function AtaqueLaranja5(){
 		yCoracao = 400
 		imgCoracao.src = "Img/coracaoRosa.png"
 		imgFundo.src = "Img/fundoPretoListras.png"
+		Boss.src = "Img/absolNivel2.png"
 		AtualizaTela()
 	}
 }
@@ -233,6 +259,7 @@ function AtaqueRosaMeio()
 	{
 		cancelAnimationFrame(animacaoRosa1)
 		AtaqueRosaEsquerdaMeio()
+		yAtaqueRosaMeio = -200
 	}
 }
 
@@ -253,6 +280,7 @@ function AtaqueRosaEsquerdaMeio()
 	{
 		cancelAnimationFrame(animacaoRosa2)
 		AtaqueRosaDireitaMeio()
+		yAtaqueRosaEsquerdaMeio = -200
 	}
 }
 
@@ -273,6 +301,7 @@ function AtaqueRosaDireitaMeio()
 	{
 		cancelAnimationFrame(animacaoRosa3)
 		AtaqueRosaEsquerdaDireita()
+		yAtaqueRosaDireitaMeio = -200
 	}
 }
 
@@ -292,8 +321,18 @@ function AtaqueRosaEsquerdaDireita()
 	if (yAtaqueRosaEsquerdaDireita >= 480)
 	{
 		cancelAnimationFrame(animacaoRosa4)
-		musica.play()
-		AtaqueRosaTriplo()
+		yAtaqueRosaEsquerdaDireita = -200
+		if (quantasVezes <= 2)
+		{
+			AtaqueRosaMeio()
+			quantasVezes++
+		}
+		else
+		{
+			Hopes.pause()
+			musica.play()
+			AtaqueRosaTriplo()
+		}
 	}
 }
 
@@ -317,6 +356,7 @@ function AtaqueRosaTriplo()
 	{
 		cancelAnimationFrame(animacaoRosa5)
 		musica.pause()
+		Hopes.play()
 		window.alert('Caiu no bait que eu sei kk')
 		xCoracao = 256
 		yCoracao = 240
@@ -334,28 +374,28 @@ document.addEventListener("keydown", function(e) {
 	if ( e.keyCode == 87 ) {
 		if (yCoracao > 0)
 			yCoracao -= 10;
-		Itachi.play()
+		Hopes.play()
 		AtualizaTela();
 	}
 
 	if ( e.keyCode == 83 ) {
 		if (yCoracao < 460)
 			yCoracao += 10;
-		Itachi.play()
+		Hopes.play()
 		AtualizaTela();
 	}
 
 	if ( e.keyCode == 65 ) {
 		if (xCoracao > 0)
 			xCoracao -= 10;
-		Itachi.play()
+		Hopes.play()
 		AtualizaTela();
 	}
 
 	if ( e.keyCode == 68 ) {
 		if (xCoracao < 480)
 			xCoracao += 10;
-		Itachi.play()
+		Hopes.play()
 		AtualizaTela();
 	}
 }
