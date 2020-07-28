@@ -13,7 +13,11 @@ imgCoracao.src = "Img/coracao.png";
 var imgLanca = new Image()
 imgLanca.src = "Img/LancaMenor.png"
 
-var musica = document.getElementById("musiquinha")
+var musica = new Audio()
+musica.src = "Musicas/HeartBeat.mp3"
+
+var Itachi = new Audio()
+Itachi.src = "Musicas/Itachi.mpeg"
 
 let qualFase = 1
 
@@ -30,6 +34,8 @@ let yAtaque4 = 0
 let yAtaque5 = 0
 
 let yAtaque6 = 0
+
+let quantasVezes = 0
 
 //---------------------------Funcões-------------------------------------
 
@@ -63,7 +69,9 @@ function Iniciar(){
 	yAtaqueRosaMeio = yAtaqueRosaDireitaMeio = yAtaqueRosaEsquerdaMeio = 
 	yAtaqueRosaEsquerdaDireita = -200
 
-	 yAtaqueRosaTriplo = -60
+	yAtaqueRosaTriplo = -60
+
+	quantasVezes = 0
 
 	AtualizaTela();
 
@@ -209,6 +217,8 @@ function AtaqueLaranja5(){
 function AtaqueRosa1()
 {
 	AtaqueRosaMeio()
+	Iniciar()
+	AtaqueRosaEsquerdaMeio()
 }
 
 function AtaqueRosaMeio()
@@ -224,7 +234,6 @@ function AtaqueRosaMeio()
 	if (yAtaqueRosaMeio >= 480)
 	{
 		cancelAnimationFrame(animacaoRosa1)
-		AtaqueRosaEsquerdaMeio()
 	}
 }
 
@@ -244,7 +253,6 @@ function AtaqueRosaEsquerdaMeio()
 	if (yAtaqueRosaEsquerdaMeio >= 480)
 	{
 		cancelAnimationFrame(animacaoRosa2)
-		AtaqueRosaDireitaMeio()
 	}
 }
 
@@ -310,6 +318,8 @@ function AtaqueRosaTriplo()
 		cancelAnimationFrame(animacaoRosa5)
 		musica.pause()
 		window.alert('Caiu no bait que eu sei kk')
+		xCoracao = 256
+		yCoracao = 240
 		imgCoracao.src = "Img/coracaoVerde.png"
 		imgFundo.src = "Img/fundoPreto.png"
 		AtualizaTela()
@@ -324,24 +334,28 @@ document.addEventListener("keydown", function(e) {
 	if ( e.keyCode == 87 ) {
 		if (yCoracao > 0)
 			yCoracao -= 10;
+		Itachi.play()
 		AtualizaTela();
 	}
 
 	if ( e.keyCode == 83 ) {
 		if (yCoracao < 460)
 			yCoracao += 10;
+		Itachi.play()
 		AtualizaTela();
 	}
 
 	if ( e.keyCode == 65 ) {
 		if (xCoracao > 0)
 			xCoracao -= 10;
+		Itachi.play()
 		AtualizaTela();
 	}
 
 	if ( e.keyCode == 68 ) {
 		if (xCoracao < 480)
 			xCoracao += 10;
+		Itachi.play()
 		AtualizaTela();
 	}
 }
@@ -360,6 +374,13 @@ else
 		AtualizaTela();
 	}
 }
+
+else
+	if (qualFase == 3)
+	{
+
+	}
+
 })
 
 function Resetar(){
@@ -377,4 +398,6 @@ function Colidir(x, y, animacao){
 		cancelAnimationFrame(animacao)
 		Resetar()
 	}
+
+
 }
