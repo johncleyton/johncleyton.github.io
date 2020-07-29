@@ -17,7 +17,10 @@ var musica = new Audio()
 musica.src = "Musicas/HeartBeat.mp3"
 
 var Hopes = new Audio()
-Hopes.src = "Musicas/HopesAndDreams.mp3"
+Hopes.src = "Musicas/Hopes2.mp3"
+
+var somMorte = new Audio()
+somMorte.src = "Musicas/Oof.mp3"
 
 var Boss = document.getElementById("Boss")
 
@@ -37,8 +40,12 @@ let yAtaque5 = 0
 
 let yAtaque6 = 0
 
-let quantasVezes = 0
+let quantasVezesRosa = 0
 let quantasVezesLaranja = 0
+
+let quantosErros = 0
+
+let emCombate = false
 
 //---------------------------Funcões-------------------------------------
 
@@ -50,11 +57,12 @@ function Iniciar(){
 	Randomizar()
 	ResetarY()
 
-	quantasVezes = 0
+	quantasVezesRosa = 0
 	quantasVezesLaranja = 0
 	AtualizaTela();
 
 }
+
 
 function Randomizar()
 {
@@ -88,6 +96,12 @@ function ResetarY()
 function AtualizaTela(){
 	objContexto.drawImage(imgFundo,0,0);
 	objContexto.drawImage(imgCoracao, xCoracao, yCoracao);
+
+	objContexto.fillStyle = "white"
+	objContexto.font = "30px Arial";
+
+	objContexto.fillText("Fase " + qualFase, 10, 30);
+	objContexto.fillText("Erros: " + quantosErros, 10, 470);
 }
 
 function Ataques(){
@@ -98,7 +112,7 @@ function Ataques(){
 	else 
 	if (qualFase == 2)
 	{
-		AtaqueRosa1()
+		AtaqueLaranja1()
 	}
 	else 
 		if (qualFase == 3)
@@ -112,9 +126,9 @@ function Ataques(){
 yAtaque1 = -70;
 xAtaque1 = [];
 
-for (let v = 0; v < 12; v++)
+for (let v = 0; v < 16; v++)
 {
-	xAtaque1[v] = Math.floor(Math.random() * 513)
+	xAtaque1[v] = Math.floor(Math.random() * 498)
 }
 
 function AtaqueLaranja1(){
@@ -190,16 +204,26 @@ function AtaqueLaranja4(){
 	if (yAtaque4 >= 480)
 	{
 		cancelAnimationFrame(animacao4)
-		if (quantasVezesLaranja <= 3)
+		if (qualFase == 2)
+		{
+		if (quantasVezesLaranja <= 4)
 		{
 			Randomizar()
 			AtaqueLaranja1()
 			quantasVezesLaranja++
 		}
 		else
-		{
 			AtaqueLaranja5()
+	}
+	else
+		if (quantasVezesLaranja <= 2)
+		{
+			Randomizar()
+			AtaqueLaranja1()
+			quantasVezesLaranja++
 		}
+		else
+			AtaqueLaranja5()
 	}
 }
 
@@ -226,14 +250,20 @@ function AtaqueLaranja5(){
 	if (yAtaque5 >= 480 || yAtaque6 >= 480)
 	{
 		cancelAnimationFrame(animacao5)
-		window.alert('Boa irmão passou da primeira fase')
 		qualFase++;
 		xCoracao = 260
 		yCoracao = 400
-		imgCoracao.src = "Img/coracaoRosa.png"
-		imgFundo.src = "Img/fundoPretoListras.png"
-		Boss.src = "Img/absolNivel2.png"
-		AtualizaTela()
+		if (qualFase == 3)
+		{
+			imgCoracao.src = "Img/coracaoRosa.png"
+			imgFundo.src = "Img/fundoPretoListras.png"
+			AtualizaTela()
+		}
+		else
+		{
+			Boss.src = "Img/absolNivel2.png"
+			Iniciar()
+		}
 	}
 }
 
@@ -322,10 +352,10 @@ function AtaqueRosaEsquerdaDireita()
 	{
 		cancelAnimationFrame(animacaoRosa4)
 		yAtaqueRosaEsquerdaDireita = -200
-		if (quantasVezes <= 2)
+		if (quantasVezesRosa <= 2)
 		{
 			AtaqueRosaMeio()
-			quantasVezes++
+			quantasVezesRosa++
 		}
 		else
 		{
@@ -357,11 +387,8 @@ function AtaqueRosaTriplo()
 		cancelAnimationFrame(animacaoRosa5)
 		musica.pause()
 		Hopes.play()
-		window.alert('Caiu no bait que eu sei kk')
-		xCoracao = 256
-		yCoracao = 240
-		imgCoracao.src = "Img/coracaoVerde.png"
-		imgFundo.src = "Img/fundoPreto.png"
+		xCoracao = 260
+		yCoracao = 400
 		AtualizaTela()
 	}
 }
@@ -369,7 +396,12 @@ function AtaqueRosaTriplo()
 
 document.addEventListener("keydown", function(e) {
 
-	if (qualFase == 1) //Movimentação do coração laranja
+	if (e.keyCode == 82)
+	{
+		Ataques()
+	}
+
+	if (qualFase == 1 || qualFase == 2) //Movimentação do coração laranja
 	{
 	if ( e.keyCode == 87 ) {
 		if (yCoracao > 0)
@@ -399,28 +431,22 @@ document.addEventListener("keydown", function(e) {
 		AtualizaTela();
 	}
 }
-else 
-	if (qualFase == 2) //Movimentação do coração rosa
+
+else
+	if (qualFase == 3 || qualFase == 4)
 	{
 	if ( e.keyCode == 65 ) {
 		if (xCoracao >= 75)
 			xCoracao -= 200;
 		AtualizaTela();
 	}
-
+	
 	if ( e.keyCode == 68 ) {
 		if (xCoracao <= 445)
 			xCoracao += 200;
 		AtualizaTela();
 	}
 }
-
-else
-	if (qualFase == 3)
-	{
-
-	}
-
 })
 
 function Resetar(){
@@ -436,6 +462,8 @@ function Colidir(x, y, animacao){
 		yCoracao < y + 64 )
 	{
 		cancelAnimationFrame(animacao)
+		quantosErros++
+		somMorte.play()
 		Resetar()
 	}
 
