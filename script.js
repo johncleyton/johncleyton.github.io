@@ -35,17 +35,14 @@ let xAtaque2 = []
 let yAtaque3 = 0
 let xAtaque3 = []
 
-let yAtaque4 = 0
-let yAtaque5 = 0
-
-let yAtaque6 = 0
+let yAtaque4 = yAtaque5 = yAtaque6 = 0
 
 let quantasVezesRosa = 0
 let quantasVezesLaranja = 0
 
 let quantosErros = 0
 
-let emCombate = false
+let noFim = false
 
 //---------------------------Funcões-------------------------------------
 
@@ -89,7 +86,7 @@ function ResetarY()
 	yAtaque3 = -80
 	yAtaque4 = yAtaque5 = yAtaque6 = -70
 	yAtaqueRosaMeio = yAtaqueRosaDireitaMeio = yAtaqueRosaEsquerdaMeio = 
-	yAtaqueRosaEsquerdaDireita = -200
+	yAtaqueRosaEsquerdaDireita = yAtaqueRosa1 = -200
 	yAtaqueRosaTriplo = -60
 }
 
@@ -105,19 +102,14 @@ function AtualizaTela(){
 }
 
 function Ataques(){
-	if (qualFase == 1)
+	if (qualFase == 1 || qualFase == 2)
 	{
 		AtaqueLaranja1()
 	}
 	else 
-	if (qualFase == 2)
+		if (qualFase == 3 || qualFase == 4)
 	{
-		AtaqueLaranja1()
-	}
-	else 
-		if (qualFase == 3)
-	{
-
+		AtaqueRosa1()
 	}
 }
 
@@ -257,6 +249,7 @@ function AtaqueLaranja5(){
 		{
 			imgCoracao.src = "Img/coracaoRosa.png"
 			imgFundo.src = "Img/fundoPretoListras.png"
+			Boss.src = "Img/ArbokNivel3.png"
 			AtualizaTela()
 		}
 		else
@@ -272,22 +265,41 @@ function AtaqueLaranja5(){
 
 function AtaqueRosa1()
 {
-	AtaqueRosaMeio()
+	if (noFim == false)
+	{
+	animacaoRosa1 = requestAnimationFrame(AtaqueRosa1)
+	AtualizaTela()
+
+	objContexto.drawImage(imgLanca, 260, yAtaqueRosa1)
+	Colidir(260, yAtaqueRosa1, animacaoRosa1)
+
+	objContexto.drawImage(imgLanca, 460, yAtaqueRosa1)
+	Colidir(460, yAtaqueRosa1, animacaoRosa1)
+
+	yAtaqueRosa1 += 15
+
+	if (yAtaqueRosa1 >= 480)
+	{
+		cancelAnimationFrame(animacaoRosa1)
+		AtaqueRosaMeio()
+		yAtaqueRosa1 = -200
+	}
+}
 }
 
 function AtaqueRosaMeio()
 {
-	animacaoRosa1 = requestAnimationFrame(AtaqueRosaMeio)
+	animacaoRosa2 = requestAnimationFrame(AtaqueRosaMeio)
 	AtualizaTela()
 
 	objContexto.drawImage(imgLanca, 260, yAtaqueRosaMeio)
-	Colidir(260, yAtaqueRosaMeio, animacaoRosa1)
+	Colidir(260, yAtaqueRosaMeio, animacaoRosa2)
 
 	yAtaqueRosaMeio += 15
 
 	if (yAtaqueRosaMeio >= 480)
 	{
-		cancelAnimationFrame(animacaoRosa1)
+		cancelAnimationFrame(animacaoRosa2)
 		AtaqueRosaEsquerdaMeio()
 		yAtaqueRosaMeio = -200
 	}
@@ -295,20 +307,20 @@ function AtaqueRosaMeio()
 
 function AtaqueRosaEsquerdaMeio()
 {
-	animacaoRosa2 = requestAnimationFrame(AtaqueRosaEsquerdaMeio)
+	animacaoRosa3 = requestAnimationFrame(AtaqueRosaEsquerdaMeio)
 	AtualizaTela()
 
 	objContexto.drawImage(imgLanca, 60, yAtaqueRosaEsquerdaMeio)
-	Colidir(60, yAtaqueRosaEsquerdaMeio, animacaoRosa2)
+	Colidir(60, yAtaqueRosaEsquerdaMeio, animacaoRosa3)
 
 	objContexto.drawImage(imgLanca, 260, yAtaqueRosaEsquerdaMeio)
-	Colidir(260, yAtaqueRosaEsquerdaMeio, animacaoRosa2)
+	Colidir(260, yAtaqueRosaEsquerdaMeio, animacaoRosa3)
 
 	yAtaqueRosaEsquerdaMeio += 15
 
 	if (yAtaqueRosaEsquerdaMeio >= 480)
 	{
-		cancelAnimationFrame(animacaoRosa2)
+		cancelAnimationFrame(animacaoRosa3)
 		AtaqueRosaDireitaMeio()
 		yAtaqueRosaEsquerdaMeio = -200
 	}
@@ -316,20 +328,20 @@ function AtaqueRosaEsquerdaMeio()
 
 function AtaqueRosaDireitaMeio()
 {
-	animacaoRosa3 = requestAnimationFrame(AtaqueRosaDireitaMeio)
+	animacaoRosa4 = requestAnimationFrame(AtaqueRosaDireitaMeio)
 	AtualizaTela()
 
 	objContexto.drawImage(imgLanca, 460, yAtaqueRosaDireitaMeio)
-	Colidir(460, yAtaqueRosaDireitaMeio, animacaoRosa3)
+	Colidir(460, yAtaqueRosaDireitaMeio, animacaoRosa4)
 
 	objContexto.drawImage(imgLanca, 260, yAtaqueRosaDireitaMeio)
-	Colidir(260, yAtaqueRosaDireitaMeio, animacaoRosa3)
+	Colidir(260, yAtaqueRosaDireitaMeio, animacaoRosa4)
 
 	yAtaqueRosaDireitaMeio += 15
 
 	if (yAtaqueRosaDireitaMeio >= 480)
 	{
-		cancelAnimationFrame(animacaoRosa3)
+		cancelAnimationFrame(animacaoRosa4)
 		AtaqueRosaEsquerdaDireita()
 		yAtaqueRosaDireitaMeio = -200
 	}
@@ -337,24 +349,26 @@ function AtaqueRosaDireitaMeio()
 
 function AtaqueRosaEsquerdaDireita()
 {
-	animacaoRosa4 = requestAnimationFrame(AtaqueRosaEsquerdaDireita)
+	animacaoRosa5 = requestAnimationFrame(AtaqueRosaEsquerdaDireita)
 	AtualizaTela()
 
 	objContexto.drawImage(imgLanca, 460, yAtaqueRosaEsquerdaDireita)
-	Colidir(460, yAtaqueRosaEsquerdaDireita, animacaoRosa4)
+	Colidir(460, yAtaqueRosaEsquerdaDireita, animacaoRosa5)
 
 	objContexto.drawImage(imgLanca, 60, yAtaqueRosaEsquerdaDireita)
-	Colidir(60, yAtaqueRosaEsquerdaDireita, animacaoRosa4)
+	Colidir(60, yAtaqueRosaEsquerdaDireita, animacaoRosa5)
 
 	yAtaqueRosaEsquerdaDireita += 15
 
 	if (yAtaqueRosaEsquerdaDireita >= 480)
 	{
-		cancelAnimationFrame(animacaoRosa4)
+		cancelAnimationFrame(animacaoRosa5)
 		yAtaqueRosaEsquerdaDireita = -200
-		if (quantasVezesRosa <= 2)
+		if (qualFase == 4)
 		{
-			AtaqueRosaMeio()
+		if (quantasVezesRosa <= 5)
+		{
+			AtaqueRosa1()
 			quantasVezesRosa++
 		}
 		else
@@ -364,41 +378,71 @@ function AtaqueRosaEsquerdaDireita()
 			AtaqueRosaTriplo()
 		}
 	}
+	else
+	{
+		if (quantasVezesRosa <= 2)
+		{
+			AtaqueRosa1()
+			quantasVezesRosa++
+		}
+		else
+		{
+			qualFase++;
+			Boss.src = "Img/galvantulaNivel4.png"
+			Iniciar()
+		}
+	}
+	}
 }
 
 function AtaqueRosaTriplo()
 {
-	animacaoRosa5 = requestAnimationFrame(AtaqueRosaTriplo)
+	animacaoRosa6 = requestAnimationFrame(AtaqueRosaTriplo)
 	AtualizaTela()
 
 	objContexto.drawImage(imgLanca, 460, yAtaqueRosaTriplo)
-	Colidir(460, yAtaqueRosaTriplo, animacaoRosa5)
+	Colidir(460, yAtaqueRosaTriplo, animacaoRosa6)
 
 	objContexto.drawImage(imgLanca, 60, yAtaqueRosaTriplo)
-	Colidir(60, yAtaqueRosaTriplo, animacaoRosa5)
+	Colidir(60, yAtaqueRosaTriplo, animacaoRosa6)
 
 	objContexto.drawImage(imgLanca, 260, yAtaqueRosaTriplo)
-	Colidir(260, yAtaqueRosaTriplo, animacaoRosa5)
+	Colidir(260, yAtaqueRosaTriplo, animacaoRosa6)
 
 	yAtaqueRosaTriplo += 1
 
 	if (yAtaqueRosaTriplo >= 300)
 	{
-		cancelAnimationFrame(animacaoRosa5)
+		cancelAnimationFrame(animacaoRosa6)
 		musica.pause()
 		Hopes.play()
-		xCoracao = 260
-		yCoracao = 400
-		AtualizaTela()
+		noFim = true
+		xCoracao = 1000
+		yCoracao = 1000
+		if (quantosErros == 0)
+		{
+			imgFundo.src = "Img/uga.png"
+			AtualizaTela()
+		}
+		else
+		{
+			imgFundo.src = "Img/TelaFinalNormal.png"
+			AtualizaTela()
+		}
 	}
 }
 
 
 document.addEventListener("keydown", function(e) {
 
-	if (e.keyCode == 82)
+	if (e.keyCode == 76)
 	{
 		Ataques()
+	}
+
+	if (e.keycode == 82)
+	{
+		Reiniciar()
 	}
 
 	if (qualFase == 1 || qualFase == 2) //Movimentação do coração laranja
@@ -466,6 +510,15 @@ function Colidir(x, y, animacao){
 		somMorte.play()
 		Resetar()
 	}
+}
 
 
+function Reiniciar()
+{
+	xCoracao=260;
+	yCoracao=400;
+	Iniciar();
+	quantosErros = 0
+	qualFase = 1
+	noFim = false
 }

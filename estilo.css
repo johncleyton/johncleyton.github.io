@@ -12,3 +12,11 @@ body{
 	text-align: center;
 	color: white
 }
+
+#controles1{
+	float: left;
+}
+
+#controles2{
+	float: right;
+}
