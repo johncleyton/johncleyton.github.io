@@ -13,14 +13,17 @@ imgCoracao.src = "Img/coracao.png";
 var imgLanca = new Image()
 imgLanca.src = "Img/LancaMenor.png"
 
-var musica = new Audio()
-musica.src = "Musicas/HeartBeat.mp3"
+var coracaoBatendo = new Audio()
+coracaoBatendo.src = "Musicas/HeartBeat.mp3"
 
 var Hopes = new Audio()
 Hopes.src = "Musicas/Hopes2.mp3"
 
 var somMorte = new Audio()
 somMorte.src = "Musicas/Oof.mp3"
+
+var musicaSecreta = new Audio()
+musicaSecreta.src = "Musicas/LavaUma.mp3"
 
 var Boss = document.getElementById("Boss")
 
@@ -366,7 +369,7 @@ function AtaqueRosaEsquerdaDireita()
 		yAtaqueRosaEsquerdaDireita = -200
 		if (qualFase == 4)
 		{
-		if (quantasVezesRosa <= 5)
+		if (quantasVezesRosa <= 3)
 		{
 			AtaqueRosa1()
 			quantasVezesRosa++
@@ -374,13 +377,13 @@ function AtaqueRosaEsquerdaDireita()
 		else
 		{
 			Hopes.pause()
-			musica.play()
+			coracaoBatendo.play()
 			AtaqueRosaTriplo()
 		}
 	}
 	else
 	{
-		if (quantasVezesRosa <= 2)
+		if (quantasVezesRosa <= 1)
 		{
 			AtaqueRosa1()
 			quantasVezesRosa++
@@ -414,14 +417,19 @@ function AtaqueRosaTriplo()
 	if (yAtaqueRosaTriplo >= 300)
 	{
 		cancelAnimationFrame(animacaoRosa6)
-		musica.pause()
+		coracaoBatendo.pause()
 		Hopes.play()
 		noFim = true
 		xCoracao = 1000
 		yCoracao = 1000
 		if (quantosErros == 0)
 		{
-			imgFundo.src = "Img/uga.png"
+			Hopes.pause()
+			musicaSecreta.play()
+			imgFundo.src = "Img/lavaAmao.png"
+			Boss.src = "Img/udyrVascaino.jpg"
+			Boss.style.width = "20%";
+			Boss.style.height = "20%";
 			AtualizaTela()
 		}
 		else
@@ -437,12 +445,13 @@ document.addEventListener("keydown", function(e) {
 
 	if (e.keyCode == 76)
 	{
+		Hopes.play()
 		Ataques()
 	}
 
-	if (e.keycode == 82)
+	if (e.keyCode == 82)
 	{
-		Reiniciar()
+		window.location.reload(false)
 	}
 
 	if (qualFase == 1 || qualFase == 2) //Movimentação do coração laranja
@@ -450,28 +459,24 @@ document.addEventListener("keydown", function(e) {
 	if ( e.keyCode == 87 ) {
 		if (yCoracao > 0)
 			yCoracao -= 10;
-		Hopes.play()
 		AtualizaTela();
 	}
 
 	if ( e.keyCode == 83 ) {
 		if (yCoracao < 460)
 			yCoracao += 10;
-		Hopes.play()
 		AtualizaTela();
 	}
 
 	if ( e.keyCode == 65 ) {
 		if (xCoracao > 0)
 			xCoracao -= 10;
-		Hopes.play()
 		AtualizaTela();
 	}
 
 	if ( e.keyCode == 68 ) {
 		if (xCoracao < 480)
 			xCoracao += 10;
-		Hopes.play()
 		AtualizaTela();
 	}
 }
@@ -510,15 +515,4 @@ function Colidir(x, y, animacao){
 		somMorte.play()
 		Resetar()
 	}
-}
-
-
-function Reiniciar()
-{
-	xCoracao=260;
-	yCoracao=400;
-	Iniciar();
-	quantosErros = 0
-	qualFase = 1
-	noFim = false
 }
